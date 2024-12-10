@@ -1,0 +1,16 @@
+module "global_variables" {
+  source      = "./modules/global_variables"
+  environment = var.environment
+}
+
+provider "aws" {
+  region = module.global_variables.aws_region
+}
+
+terraform {
+  backend "s3" {
+    bucket = "cloud-burger-state"
+    key    = "prod/database.tfstate"
+    region = "us-east-2"
+  }
+}

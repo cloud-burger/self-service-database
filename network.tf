@@ -9,7 +9,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = "us-east-2a"
   map_public_ip_on_launch = true
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "public_subnet2" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.3.0/24"
-  availability_zone       = "us-east-1b"
+  availability_zone       = "us-east-2b"
   map_public_ip_on_launch = true
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "public_subnet2" {
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
+  availability_zone = "us-east-2b"
 }
 
 # Gateway de internet
@@ -133,7 +133,7 @@ resource "aws_security_group" "ssm_endpoint_sg" {
 # Criação do VPC endpoint para o AWS Systems Manager (SSM)
 resource "aws_vpc_endpoint" "ssm_endpoint" {
   vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.us-east-1.ssm"
+  service_name        = "com.amazonaws.us-east-2.ssm"
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   security_group_ids  = [aws_security_group.ssm_endpoint_sg.id]

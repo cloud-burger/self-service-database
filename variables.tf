@@ -1,4 +1,6 @@
-variable "environment" {}
+variable "environment" {
+  default = "prod"
+}
 
 variable "project" {
   default = "cloud-burger"

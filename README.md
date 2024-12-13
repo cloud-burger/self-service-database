@@ -44,7 +44,7 @@ terraform plan
 6. Aplique as configurações e crie os recursos na AWS com:
 
 ```bash
-terraform apply -var="TF_VAR_database_passord=SUA_SENHA"
+terraform apply -var="TF_VAR_database_password=SUA_SENHA"
 ```
 
 ## Considerações

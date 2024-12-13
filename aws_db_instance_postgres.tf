@@ -1,4 +1,4 @@
-resource "aws_db_instance" "database" {
+resource "aws_db_instance" "postgres" {
   allocated_storage    = 20
   storage_type         = "gp3"
   engine               = "postgres"
@@ -19,9 +19,4 @@ resource "aws_db_instance" "database" {
     "Project" : "${var.project}"
     "Name" : "RDS PostgreSQL"
   }
-}
-
-output "db_instance_endpoint" {
-  description = "The connection endpoint"
-  value       = aws_db_instance.database.endpoint
 }

@@ -23,7 +23,7 @@ jobs:
   terraform_plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.action }} == 'plan'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'plan'
 
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
   terraform_apply:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || ${{ github.event.inputs.action }} == 'apply'
+    if: github.event_name == 'push' || github.event.inputs.action == 'apply'
 
     steps:
       - name: Checkout
@@ -68,7 +68,7 @@ jobs:
   terraform_destroy:
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.action }} == 'destroy'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
 
     steps:
       - name: Checkout

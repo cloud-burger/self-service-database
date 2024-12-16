@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: "Terraform"
 
 on:
   push:
@@ -6,56 +6,81 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      confirm:
-        description: 'Type "yes" to confirm destroy action'
+      action:
         required: true
-        
+        type: choice
+        description: Terraform Action
+        options:
+          - plan
+          - apply
+          - destroy
+
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  terraform_apply:
-    name: 'Terraform Apply'
+  terraform_plan:
+    name: "Terraform Plan"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: ${{ github.event.inputs.action }} == 'plan'
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.8.2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Plan
-      run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      env:
-        TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
+  terraform_apply:
+    name: "Terraform Apply"
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action }} == 'apply'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_database_password: ${{ secrets.DATABASE_PASSWORD }}
 
   terraform_destroy:
-    name: 'Terraform Destroy'
+    name: "Terraform Destroy"
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'yes'
+    if: ${{ github.event.inputs.action }} == 'destroy'
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.8.2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Destroy
-      run: terraform destroy -auto-approve
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

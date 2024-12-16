@@ -1,6 +1,6 @@
 resource "aws_ssm_parameter" "database_host" {
   name  = "/prod/${var.project}/database_host"
-  value = aws_db_instance.database.endpoint
+  value = aws_db_instance.postgres.endpoint
   type  = "String"
 }
 
